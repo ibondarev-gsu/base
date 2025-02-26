@@ -14,7 +14,6 @@ func (k msgServer) SubmitRollupTx(goCtx context.Context, msg *types.MsgSubmitRol
 
 	// Логируем полученные данные
 	k.Logger().Info("Received Rollup Tx", "data", msg.Data)
-
 	// Открываем KVStore через KVStoreService
 	store := k.storeService.OpenKVStore(ctx)
 
