@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	Msg_UpdateParams_FullMethodName   = "/base.rollup.Msg/UpdateParams"
 	Msg_SubmitRollupTx_FullMethodName = "/base.rollup.Msg/SubmitRollupTx"
+	Msg_RegisterVk_FullMethodName     = "/base.rollup.Msg/RegisterVk"
 )
 
 // MsgClient is the client API for Msg service.
@@ -32,6 +33,7 @@ type MsgClient interface {
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
 	SubmitRollupTx(ctx context.Context, in *MsgSubmitRollupTx, opts ...grpc.CallOption) (*MsgSubmitRollupTxResponse, error)
+	RegisterVk(ctx context.Context, in *MsgRegisterVk, opts ...grpc.CallOption) (*MsgRegisterVkResponse, error)
 }
 
 type msgClient struct {
@@ -60,6 +62,15 @@ func (c *msgClient) SubmitRollupTx(ctx context.Context, in *MsgSubmitRollupTx, o
 	return out, nil
 }
 
+func (c *msgClient) RegisterVk(ctx context.Context, in *MsgRegisterVk, opts ...grpc.CallOption) (*MsgRegisterVkResponse, error) {
+	out := new(MsgRegisterVkResponse)
+	err := c.cc.Invoke(ctx, Msg_RegisterVk_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -68,6 +79,7 @@ type MsgServer interface {
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
 	SubmitRollupTx(context.Context, *MsgSubmitRollupTx) (*MsgSubmitRollupTxResponse, error)
+	RegisterVk(context.Context, *MsgRegisterVk) (*MsgRegisterVkResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -80,6 +92,9 @@ func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*
 }
 func (UnimplementedMsgServer) SubmitRollupTx(context.Context, *MsgSubmitRollupTx) (*MsgSubmitRollupTxResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitRollupTx not implemented")
+}
+func (UnimplementedMsgServer) RegisterVk(context.Context, *MsgRegisterVk) (*MsgRegisterVkResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterVk not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -130,6 +145,24 @@ func _Msg_SubmitRollupTx_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_RegisterVk_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRegisterVk)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).RegisterVk(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_RegisterVk_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).RegisterVk(ctx, req.(*MsgRegisterVk))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -144,6 +177,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SubmitRollupTx",
 			Handler:    _Msg_SubmitRollupTx_Handler,
+		},
+		{
+			MethodName: "RegisterVk",
+			Handler:    _Msg_RegisterVk_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

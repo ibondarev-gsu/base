@@ -27,6 +27,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgSubmitRollupTx int = 100
 
+	opWeightMsgRegisterVk = "op_weight_msg_register_vk"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRegisterVk int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -61,6 +65,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		rollupsimulation.SimulateMsgSubmitRollupTx(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
+	var weightMsgRegisterVk int
+	simState.AppParams.GetOrGenerate(opWeightMsgRegisterVk, &weightMsgRegisterVk, nil,
+		func(_ *rand.Rand) {
+			weightMsgRegisterVk = defaultWeightMsgRegisterVk
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRegisterVk,
+		rollupsimulation.SimulateMsgRegisterVk(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
@@ -74,6 +89,14 @@ func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.Wei
 			defaultWeightMsgSubmitRollupTx,
 			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
 				rollupsimulation.SimulateMsgSubmitRollupTx(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgRegisterVk,
+			defaultWeightMsgRegisterVk,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				rollupsimulation.SimulateMsgRegisterVk(am.accountKeeper, am.bankKeeper, am.keeper)
 				return nil
 			},
 		),

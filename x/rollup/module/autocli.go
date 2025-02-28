@@ -34,6 +34,12 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Short:          "Send a submitRollupTx tx",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "data"}},
 				},
+				{
+					RpcMethod:      "RegisterVk",
+					Use:            "register-vk [vk]",
+					Short:          "Send a registerVK tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "vk"}},
+				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},
 		},
