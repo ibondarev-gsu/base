@@ -42,6 +42,7 @@ message MsgSubmitRollupTx {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   string data    = 2;
+  string proof   = 3;
 }
 
 message MsgSubmitRollupTxResponse {}
