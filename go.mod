@@ -29,6 +29,7 @@ require (
 	github.com/bufbuild/buf v1.34.0
 	github.com/cometbft/cometbft v0.38.12
 	github.com/consensys/gnark v0.12.0
+	github.com/consensys/gnark-crypto v0.15.0
 	github.com/cosmos/cosmos-db v1.0.2
 	github.com/cosmos/cosmos-proto v1.0.0-beta.5
 	github.com/cosmos/cosmos-sdk v0.50.10
@@ -97,7 +98,6 @@ require (
 	github.com/cockroachdb/tokenbucket v0.0.0-20230807174530-cc333fc44b06 // indirect
 	github.com/cometbft/cometbft-db v0.11.0 // indirect
 	github.com/consensys/bavard v0.1.27 // indirect
-	github.com/consensys/gnark-crypto v0.15.0 // indirect
 	github.com/containerd/stargz-snapshotter/estargz v0.15.1 // indirect
 	github.com/cosmos/btcutil v1.0.5 // indirect
 	github.com/cosmos/go-bip39 v1.0.0 // indirect

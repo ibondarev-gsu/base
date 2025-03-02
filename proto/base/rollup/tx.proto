@@ -41,8 +41,8 @@ message MsgUpdateParamsResponse {}
 message MsgSubmitRollupTx {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
-  string data    = 2;
-  string proof   = 3;
+  bytes data    = 2;
+  bytes proof   = 3;
 }
 
 message MsgSubmitRollupTxResponse {}
@@ -50,7 +50,7 @@ message MsgSubmitRollupTxResponse {}
 message MsgRegisterVk {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
-  string vk      = 2;
+  bytes vk      = 2;
 }
 
 message MsgRegisterVkResponse {}

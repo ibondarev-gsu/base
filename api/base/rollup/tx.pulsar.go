@@ -957,14 +957,14 @@ func (x *fastReflection_MsgSubmitRollupTx) Range(f func(protoreflect.FieldDescri
 			return
 		}
 	}
-	if x.Data != "" {
-		value := protoreflect.ValueOfString(x.Data)
+	if len(x.Data) != 0 {
+		value := protoreflect.ValueOfBytes(x.Data)
 		if !f(fd_MsgSubmitRollupTx_data, value) {
 			return
 		}
 	}
-	if x.Proof != "" {
-		value := protoreflect.ValueOfString(x.Proof)
+	if len(x.Proof) != 0 {
+		value := protoreflect.ValueOfBytes(x.Proof)
 		if !f(fd_MsgSubmitRollupTx_proof, value) {
 			return
 		}
@@ -987,9 +987,9 @@ func (x *fastReflection_MsgSubmitRollupTx) Has(fd protoreflect.FieldDescriptor) 
 	case "base.rollup.MsgSubmitRollupTx.creator":
 		return x.Creator != ""
 	case "base.rollup.MsgSubmitRollupTx.data":
-		return x.Data != ""
+		return len(x.Data) != 0
 	case "base.rollup.MsgSubmitRollupTx.proof":
-		return x.Proof != ""
+		return len(x.Proof) != 0
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: base.rollup.MsgSubmitRollupTx"))
@@ -1009,9 +1009,9 @@ func (x *fastReflection_MsgSubmitRollupTx) Clear(fd protoreflect.FieldDescriptor
 	case "base.rollup.MsgSubmitRollupTx.creator":
 		x.Creator = ""
 	case "base.rollup.MsgSubmitRollupTx.data":
-		x.Data = ""
+		x.Data = nil
 	case "base.rollup.MsgSubmitRollupTx.proof":
-		x.Proof = ""
+		x.Proof = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: base.rollup.MsgSubmitRollupTx"))
@@ -1033,10 +1033,10 @@ func (x *fastReflection_MsgSubmitRollupTx) Get(descriptor protoreflect.FieldDesc
 		return protoreflect.ValueOfString(value)
 	case "base.rollup.MsgSubmitRollupTx.data":
 		value := x.Data
-		return protoreflect.ValueOfString(value)
+		return protoreflect.ValueOfBytes(value)
 	case "base.rollup.MsgSubmitRollupTx.proof":
 		value := x.Proof
-		return protoreflect.ValueOfString(value)
+		return protoreflect.ValueOfBytes(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: base.rollup.MsgSubmitRollupTx"))
@@ -1060,9 +1060,9 @@ func (x *fastReflection_MsgSubmitRollupTx) Set(fd protoreflect.FieldDescriptor, 
 	case "base.rollup.MsgSubmitRollupTx.creator":
 		x.Creator = value.Interface().(string)
 	case "base.rollup.MsgSubmitRollupTx.data":
-		x.Data = value.Interface().(string)
+		x.Data = value.Bytes()
 	case "base.rollup.MsgSubmitRollupTx.proof":
-		x.Proof = value.Interface().(string)
+		x.Proof = value.Bytes()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: base.rollup.MsgSubmitRollupTx"))
@@ -1105,9 +1105,9 @@ func (x *fastReflection_MsgSubmitRollupTx) NewField(fd protoreflect.FieldDescrip
 	case "base.rollup.MsgSubmitRollupTx.creator":
 		return protoreflect.ValueOfString("")
 	case "base.rollup.MsgSubmitRollupTx.data":
-		return protoreflect.ValueOfString("")
+		return protoreflect.ValueOfBytes(nil)
 	case "base.rollup.MsgSubmitRollupTx.proof":
-		return protoreflect.ValueOfString("")
+		return protoreflect.ValueOfBytes(nil)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: base.rollup.MsgSubmitRollupTx"))
@@ -1324,7 +1324,7 @@ func (x *fastReflection_MsgSubmitRollupTx) ProtoMethods() *protoiface.Methods {
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Data", wireType)
 				}
-				var stringLen uint64
+				var byteLen int
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -1334,29 +1334,31 @@ func (x *fastReflection_MsgSubmitRollupTx) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					byteLen |= int(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
+				if byteLen < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
-				postIndex := iNdEx + intStringLen
+				postIndex := iNdEx + byteLen
 				if postIndex < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Data = string(dAtA[iNdEx:postIndex])
+				x.Data = append(x.Data[:0], dAtA[iNdEx:postIndex]...)
+				if x.Data == nil {
+					x.Data = []byte{}
+				}
 				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Proof", wireType)
 				}
-				var stringLen uint64
+				var byteLen int
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -1366,23 +1368,25 @@ func (x *fastReflection_MsgSubmitRollupTx) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					byteLen |= int(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
+				if byteLen < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
-				postIndex := iNdEx + intStringLen
+				postIndex := iNdEx + byteLen
 				if postIndex < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Proof = string(dAtA[iNdEx:postIndex])
+				x.Proof = append(x.Proof[:0], dAtA[iNdEx:postIndex]...)
+				if x.Proof == nil {
+					x.Proof = []byte{}
+				}
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -1859,8 +1863,8 @@ func (x *fastReflection_MsgRegisterVk) Range(f func(protoreflect.FieldDescriptor
 			return
 		}
 	}
-	if x.Vk != "" {
-		value := protoreflect.ValueOfString(x.Vk)
+	if len(x.Vk) != 0 {
+		value := protoreflect.ValueOfBytes(x.Vk)
 		if !f(fd_MsgRegisterVk_vk, value) {
 			return
 		}
@@ -1883,7 +1887,7 @@ func (x *fastReflection_MsgRegisterVk) Has(fd protoreflect.FieldDescriptor) bool
 	case "base.rollup.MsgRegisterVk.creator":
 		return x.Creator != ""
 	case "base.rollup.MsgRegisterVk.vk":
-		return x.Vk != ""
+		return len(x.Vk) != 0
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: base.rollup.MsgRegisterVk"))
@@ -1903,7 +1907,7 @@ func (x *fastReflection_MsgRegisterVk) Clear(fd protoreflect.FieldDescriptor) {
 	case "base.rollup.MsgRegisterVk.creator":
 		x.Creator = ""
 	case "base.rollup.MsgRegisterVk.vk":
-		x.Vk = ""
+		x.Vk = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: base.rollup.MsgRegisterVk"))
@@ -1925,7 +1929,7 @@ func (x *fastReflection_MsgRegisterVk) Get(descriptor protoreflect.FieldDescript
 		return protoreflect.ValueOfString(value)
 	case "base.rollup.MsgRegisterVk.vk":
 		value := x.Vk
-		return protoreflect.ValueOfString(value)
+		return protoreflect.ValueOfBytes(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: base.rollup.MsgRegisterVk"))
@@ -1949,7 +1953,7 @@ func (x *fastReflection_MsgRegisterVk) Set(fd protoreflect.FieldDescriptor, valu
 	case "base.rollup.MsgRegisterVk.creator":
 		x.Creator = value.Interface().(string)
 	case "base.rollup.MsgRegisterVk.vk":
-		x.Vk = value.Interface().(string)
+		x.Vk = value.Bytes()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: base.rollup.MsgRegisterVk"))
@@ -1990,7 +1994,7 @@ func (x *fastReflection_MsgRegisterVk) NewField(fd protoreflect.FieldDescriptor)
 	case "base.rollup.MsgRegisterVk.creator":
 		return protoreflect.ValueOfString("")
 	case "base.rollup.MsgRegisterVk.vk":
-		return protoreflect.ValueOfString("")
+		return protoreflect.ValueOfBytes(nil)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: base.rollup.MsgRegisterVk"))
@@ -2196,7 +2200,7 @@ func (x *fastReflection_MsgRegisterVk) ProtoMethods() *protoiface.Methods {
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Vk", wireType)
 				}
-				var stringLen uint64
+				var byteLen int
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -2206,23 +2210,25 @@ func (x *fastReflection_MsgRegisterVk) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					byteLen |= int(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
+				if byteLen < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
-				postIndex := iNdEx + intStringLen
+				postIndex := iNdEx + byteLen
 				if postIndex < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Vk = string(dAtA[iNdEx:postIndex])
+				x.Vk = append(x.Vk[:0], dAtA[iNdEx:postIndex]...)
+				if x.Vk == nil {
+					x.Vk = []byte{}
+				}
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -2708,8 +2714,8 @@ type MsgSubmitRollupTx struct {
 	unknownFields protoimpl.UnknownFields
 
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Data    string `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
-	Proof   string `protobuf:"bytes,3,opt,name=proof,proto3" json:"proof,omitempty"`
+	Data    []byte `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+	Proof   []byte `protobuf:"bytes,3,opt,name=proof,proto3" json:"proof,omitempty"`
 }
 
 func (x *MsgSubmitRollupTx) Reset() {
@@ -2739,18 +2745,18 @@ func (x *MsgSubmitRollupTx) GetCreator() string {
 	return ""
 }
 
-func (x *MsgSubmitRollupTx) GetData() string {
+func (x *MsgSubmitRollupTx) GetData() []byte {
 	if x != nil {
 		return x.Data
 	}
-	return ""
+	return nil
 }
 
-func (x *MsgSubmitRollupTx) GetProof() string {
+func (x *MsgSubmitRollupTx) GetProof() []byte {
 	if x != nil {
 		return x.Proof
 	}
-	return ""
+	return nil
 }
 
 type MsgSubmitRollupTxResponse struct {
@@ -2785,7 +2791,7 @@ type MsgRegisterVk struct {
 	unknownFields protoimpl.UnknownFields
 
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Vk      string `protobuf:"bytes,2,opt,name=vk,proto3" json:"vk,omitempty"`
+	Vk      []byte `protobuf:"bytes,2,opt,name=vk,proto3" json:"vk,omitempty"`
 }
 
 func (x *MsgRegisterVk) Reset() {
@@ -2815,11 +2821,11 @@ func (x *MsgRegisterVk) GetCreator() string {
 	return ""
 }
 
-func (x *MsgRegisterVk) GetVk() string {
+func (x *MsgRegisterVk) GetVk() []byte {
 	if x != nil {
 		return x.Vk
 	}
-	return ""
+	return nil
 }
 
 type MsgRegisterVkResponse struct {
@@ -2877,15 +2883,15 @@ var file_base_rollup_tx_proto_rawDesc = []byte{
 	0x73, 0x67, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x52, 0x6f, 0x6c, 0x6c, 0x75, 0x70, 0x54, 0x78,
 	0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x61,
-	0x74, 0x61, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x12, 0x14,
-	0x0a, 0x05, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x70,
+	0x74, 0x61, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x12, 0x14,
+	0x0a, 0x05, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x05, 0x70,
 	0x72, 0x6f, 0x6f, 0x66, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74,
 	0x6f, 0x72, 0x22, 0x1b, 0x0a, 0x19, 0x4d, 0x73, 0x67, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x52,
 	0x6f, 0x6c, 0x6c, 0x75, 0x70, 0x54, 0x78, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
 	0x47, 0x0a, 0x0d, 0x4d, 0x73, 0x67, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x56, 0x6b,
 	0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x0e, 0x0a, 0x02, 0x76, 0x6b,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x76, 0x6b, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x02, 0x76, 0x6b, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a,
 	0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x17, 0x0a, 0x15, 0x4d, 0x73, 0x67, 0x52,
 	0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x56, 0x6b, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
 	0x65, 0x32, 0x88, 0x02, 0x0a, 0x03, 0x4d, 0x73, 0x67, 0x12, 0x52, 0x0a, 0x0c, 0x55, 0x70, 0x64,
